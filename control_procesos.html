@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lazos de Control en Procesos Industriales</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0a101f;
+            color: #e2e8f0;
+        }
+
+        /* Efecto de luz que sigue al cursor */
+        .cursor-light {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(29, 78, 216, 0.15) 0%, rgba(29, 78, 216, 0) 60%);
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            transition: transform 0.1s ease-out;
+            z-index: 0;
+        }
+
+        /* Animación de "respiración" para las tarjetas */
+        @keyframes breathe {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2), 0 4px 6px -2px rgba(0, 0, 0, 0.1);
+            }
+            50% {
+                transform: scale(1.02);
+                box-shadow: 0 20px 25px -5px rgba(29, 78, 216, 0.2), 0 10px 10px -5px rgba(29, 78, 216, 0.1);
+            }
+        }
+
+        .breathing-card {
+            animation: breathe 10s ease-in-out infinite;
+        }
+
+        /* Estilos para la animación de aparición al hacer scroll */
+        .scroll-animate {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            will-change: opacity, transform;
+        }
+
+        .scroll-animate.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Gradiente para títulos */
+        .text-gradient {
+            background-image: linear-gradient(to right, #60a5fa, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-fill-color: transparent;
+        }
+        
+        /* Estilo para viñetas personalizadas */
+        .custom-list li {
+            position: relative;
+            padding-left: 28px;
+            margin-bottom: 12px;
+        }
+
+        .custom-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            top: 2px;
+            color: #3b82f6;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        /* Contenedor principal para centrar el contenido y darle perspectiva */
+        .main-container {
+            position: relative;
+            z-index: 1;
+        }
+
+    </style>
+</head>
+<body class="overflow-x-hidden">
+
+    <!-- Div para el efecto de luz del cursor -->
+    <div class="cursor-light"></div>
+
+    <div class="main-container container mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
+
+        <!-- Encabezado -->
+        <header class="text-center mb-20 scroll-animate">
+            <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight mb-4">
+                El Corazón del Control de Procesos
+            </h1>
+            <p class="text-lg sm:text-xl text-slate-400 max-w-3xl mx-auto">
+                Una inmersión dinámica en los lazos de control y los parámetros que gobiernan la estabilidad industrial.
+            </p>
+        </header>
+
+        <!-- Sección 1: Lazo de Control y Tipos de Parámetros -->
+        <section class="mb-24">
+            <div class="scroll-animate mb-16 text-center">
+                <h2 class="text-3xl sm:text-4xl font-bold text-gradient">1. Lazo de Control y Tipos de Parámetros</h2>
+                <p class="mt-3 text-slate-400 max-w-2xl mx-auto">Cómo se conecta todo en un lazo de control y qué parámetros usamos para mantener el equilibrio.</p>
+            </div>
+
+            <!-- Qué es un lazo de control -->
+            <div class="scroll-animate bg-slate-900/50 backdrop-blur-sm border border-blue-800/30 rounded-2xl p-6 sm:p-8 mb-16">
+                <h3 class="text-2xl font-semibold mb-4 text-blue-400">¿Qué es un Lazo de Control?</h3>
+                <p class="text-slate-300 leading-relaxed mb-6">
+                    Es un ciclo continuo para mantener una variable del proceso estable. Funciona comparando lo que <strong class="text-blue-300">queremos</strong> con lo que <strong class="text-blue-300">tenemos</strong> y actuando para corregir la diferencia.
+                </p>
+                <div class="flex flex-wrap gap-4 justify-center items-center text-center">
+                    <div class="flex-1 min-w-[150px] p-4 bg-slate-800 rounded-lg border border-slate-700">
+                        <div class="text-blue-400 font-bold text-lg">SP (Set Point)</div>
+                        <div class="text-sm text-slate-400">Lo que quiero</div>
+                    </div>
+                    <div class="text-2xl font-mono text-slate-500">→</div>
+                    <div class="flex-1 min-w-[150px] p-4 bg-slate-800 rounded-lg border border-slate-700">
+                        <div class="text-green-400 font-bold text-lg">PV (Process Variable)</div>
+                        <div class="text-sm text-slate-400">Lo que tengo (medido)</div>
+                    </div>
+                    <div class="text-2xl font-mono text-slate-500">→</div>
+                    <div class="flex-1 min-w-[150px] p-4 bg-slate-800 rounded-lg border border-slate-700">
+                        <div class="text-orange-400 font-bold text-lg">MV (Manipulated Variable)</div>
+                        <div class="text-sm text-slate-400">Lo que muevo (actuador)</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Parámetros de control -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Parámetros Físicos -->
+                <div class="scroll-animate breathing-card bg-slate-900/50 backdrop-blur-sm border border-blue-800/30 rounded-2xl p-6 transform transition duration-300 hover:border-blue-500">
+                    <h4 class="text-xl font-bold mb-4 text-blue-400">A. Parámetros Físicos</h4>
+                    <ul class="space-y-2 text-slate-300 custom-list">
+                        <li><strong>Caudal (m³/h):</strong> Distribuye cargas y tiempos.</li>
+                        <li><strong>Nivel (m):</strong> Controla bombas y evita reboses.</li>
+                        <li><strong>Presión (bar):</strong> Seguridad y funcionamiento.</li>
+                        <li><strong>Temperatura (°C):</strong> Clave en reacciones y biología.</li>
+                        <li><strong>Turbidez/SS:</strong> Indicador de claridad.</li>
+                        <li><strong>Conductividad (µS/cm):</strong> Mide salinidad.</li>
+                    </ul>
+                </div>
+
+                <!-- Parámetros Químicos -->
+                <div class="scroll-animate breathing-card bg-slate-900/50 backdrop-blur-sm border border-blue-800/30 rounded-2xl p-6 transform transition duration-300 hover:border-blue-500" style="animation-delay: 0.2s;">
+                    <h4 class="text-xl font-bold mb-4 text-green-400">B. Parámetros Químicos</h4>
+                    <ul class="space-y-2 text-slate-300 custom-list">
+                        <li><strong>pH:</strong> Neutralización con ácido/base.</li>
+                        <li><strong>ORP (Redox):</strong> Guía de oxidación/reducción.</li>
+                        <li><strong>Amonio (NH₄⁺), Nitratos (NO₃⁻):</strong> Control biológico.</li>
+                        <li><strong>DQO/DBO:</strong> Carga orgánica del agua.</li>
+                        <li><strong>Cloro residual:</strong> Control de desinfección.</li>
+                        <li><strong>Alcalinidad:</strong> "Amortiguador" del pH.</li>
+                    </ul>
+                </div>
+
+                <!-- Parámetros Biológicos -->
+                <div class="scroll-animate breathing-card bg-slate-900/50 backdrop-blur-sm border border-blue-800/30 rounded-2xl p-6 transform transition duration-300 hover:border-blue-500" style="animation-delay: 0.4s;">
+                    <h4 class="text-xl font-bold mb-4 text-orange-400">C. Parámetros Biológicos</h4>
+                    <ul class="space-y-2 text-slate-300 custom-list">
+                        <li><strong>MLSS/MLVSS:</strong> Cantidad de biomasa (lodos).</li>
+                        <li><strong>SVI:</strong> Calidad de decantación del fango.</li>
+                        <li><strong>OUR:</strong> Tasa de consumo de oxígeno (actividad).</li>
+                        <li><strong>Edad del fango (SRT):</strong> Equilibrio microbiano.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección 2: Conexión en la Depuradora -->
+        <section>
+            <div class="scroll-animate mb-16 text-center">
+                <h2 class="text-3xl sm:text-4xl font-bold text-gradient">2. Conexión en la Depuradora Clásica (EDAR)</h2>
+                <p class="mt-3 text-slate-400 max-w-2xl mx-auto">Uniendo los lazos y parámetros en las etapas clave de una Estación Depuradora de Aguas Residuales.</p>
+            </div>
+            
+            <!-- Etapas de la depuradora -->
+            <div class="scroll-animate mb-16">
+                 <div class="space-y-8 relative before:absolute before:inset-0 before:ml-5 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-slate-800 before:via-blue-800 before:to-slate-800">
+                    <!-- Pretratamiento -->
+                    <div class="relative flex items-start gap-5">
+                        <div class="h-10 w-10 flex items-center justify-center rounded-full border-2 border-blue-500 bg-slate-800 text-blue-300 font-bold">1</div>
+                        <div class="flex-1 pt-1.5">
+                            <h4 class="text-lg font-semibold text-blue-400">Pretratamiento</h4>
+                            <p class="text-sm text-slate-400"><strong>PVs Físicas:</strong> Nivel, Caudal. <strong>MV/Actuadores:</strong> Bombas, Compuertas.</p>
+                        </div>
+                    </div>
+                     <!-- Primario -->
+                    <div class="relative flex items-start gap-5">
+                        <div class="h-10 w-10 flex items-center justify-center rounded-full border-2 border-blue-500 bg-slate-800 text-blue-300 font-bold">2</div>
+                        <div class="flex-1 pt-1.5">
+                            <h4 class="text-lg font-semibold text-blue-400">Decantación Primaria</h4>
+                            <p class="text-sm text-slate-400"><strong>PVs:</strong> Turbidez, Caudal. <strong>MV/Actuadores:</strong> Rascadores.</p>
+                        </div>
+                    </div>
+                     <!-- Biológico -->
+                    <div class="relative flex items-start gap-5">
+                        <div class="h-10 w-10 flex items-center justify-center rounded-full border-2 border-green-500 bg-slate-800 text-green-300 font-bold ring-2 ring-green-500 ring-offset-2 ring-offset-slate-900">3</div>
+                        <div class="flex-1 pt-1.5">
+                            <h4 class="text-lg font-semibold text-green-400">Biológico (Lodos Activados) - ETAPA CLAVE</h4>
+                            <p class="text-sm text-slate-400"><strong>PVs Clave:</strong> Oxígeno Disuelto (DO), Amonio (NH₄⁺), MLSS, SVI. <strong>MV/Actuadores:</strong> Soplantes de aire.</p>
+                        </div>
+                    </div>
+                     <!-- Secundario -->
+                    <div class="relative flex items-start gap-5">
+                        <div class="h-10 w-10 flex items-center justify-center rounded-full border-2 border-blue-500 bg-slate-800 text-blue-300 font-bold">4</div>
+                        <div class="flex-1 pt-1.5">
+                            <h4 class="text-lg font-semibold text-blue-400">Decantación Secundaria</h4>
+                            <p class="text-sm text-slate-400"><strong>PVs:</strong> SS en efluente, Nivel de fangos. <strong>MV/Actuadores:</strong> Bombas de recirculación/purga.</p>
+                        </div>
+                    </div>
+                     <!-- Desinfección -->
+                    <div class="relative flex items-start gap-5">
+                        <div class="h-10 w-10 flex items-center justify-center rounded-full border-2 border-blue-500 bg-slate-800 text-blue-300 font-bold">5</div>
+                        <div class="flex-1 pt-1.5">
+                            <h4 class="text-lg font-semibold text-blue-400">Desinfección</h4>
+                            <p class="text-sm text-slate-400"><strong>PVs:</strong> Cloro residual, ORP, UVT. <strong>MV/Actuadores:</strong> Dosificador de cloro, Potencia UV.</p>
+                        </div>
+                    </div>
+                 </div>
+            </div>
+
+            <!-- Explicación etapa concreta -->
+            <div class="scroll-animate bg-slate-900/50 backdrop-blur-sm border border-green-800/30 rounded-2xl p-6 sm:p-8 mt-12">
+                <h3 class="text-2xl font-semibold mb-6 text-green-400">Análisis Detallado: Reactor Biológico (Aireación)</h3>
+                <div class="grid md:grid-cols-3 gap-6 text-center">
+                    <div class="p-4 bg-slate-800/70 rounded-lg">
+                        <p class="font-bold text-lg text-blue-300">Qué quiero (SP)</p>
+                        <p class="text-slate-300">Mantener Oxígeno Disuelto (DO) en ≈ 2 mg/L para la actividad bacteriana.</p>
+                    </div>
+                    <div class="p-4 bg-slate-800/70 rounded-lg">
+                        <p class="font-bold text-lg text-green-300">Qué mido (PV)</p>
+                        <p class="text-slate-300">Sonda de DO en tiempo real, pH, T°, NH₄⁺ en salida y MLSS/SVI.</p>
+                    </div>
+                    <div class="p-4 bg-slate-800/70 rounded-lg">
+                        <p class="font-bold text-lg text-orange-300">Qué muevo (MV)</p>
+                        <p class="text-slate-300">La aireación (soplante/válvula), recirculación y purga de lodos.</p>
+                    </div>
+                </div>
+                <div class="mt-6 pt-6 border-t border-slate-700">
+                    <h4 class="font-semibold text-lg mb-2 text-slate-200">¿Cómo reacciona el lazo?</h4>
+                    <p class="text-slate-300 leading-relaxed">
+                        Si el <strong class="text-green-400">DO (PV)</strong> baja por un aumento de carga, el controlador PID aumenta la <strong class="text-orange-400">aireación (MV)</strong>. Esto hace que el DO vuelva a subir hacia el <strong class="text-blue-400">SP</strong> de 2 mg/L. Si el amonio en salida sube, se revisan parámetros biológicos como la edad del fango (SRT) para estabilizar la biomasa.
+                    </p>
+                </div>
+            </div>
+
+        </section>
+        
+        <!-- Mensaje Final -->
+        <footer class="text-center mt-24 pt-12 border-t border-slate-800 scroll-animate">
+            <h3 class="text-2xl font-bold text-gradient">Conexión Completa</h3>
+            <p class="text-slate-400 max-w-3xl mx-auto mt-4">
+                En la depuradora, cada etapa utiliza parámetros físicos, químicos y biológicos como <strong class="text-green-400">PV</strong> dentro de lazos de control. El controlador ajusta actuadores (la <strong class="text-orange-400">MV</strong>) para volver al <strong class="text-blue-400">SP</strong>. Así se consigue estabilidad del proceso, cumplimiento legal y ahorro de energía.
+            </p>
+        </footer>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Efecto de luz que sigue al cursor
+            const light = document.querySelector('.cursor-light');
+            document.addEventListener('mousemove', (e) => {
+                // Usamos pageX y pageY para que funcione correctamente con el scroll
+                light.style.transform = `translate(${e.pageX - 250}px, ${e.pageY - 250}px)`;
+            });
+
+            // Animación de aparición al hacer scroll
+            const animatedElements = document.querySelectorAll('.scroll-animate');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                    }
+                });
+            }, {
+                threshold: 0.1 // Se activa cuando el 10% del elemento es visible
+            });
+
+            animatedElements.forEach(el => {
+                observer.observe(el);
+            });
+        });
+    </script>
+</body>
+</html>
