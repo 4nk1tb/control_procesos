@@ -91,6 +91,34 @@
             z-index: 1;
         }
 
+        /* Estilos para la simulación */
+        @keyframes rise {
+            0% {
+                bottom: -10px;
+                opacity: 1;
+                transform: scale(0.5);
+            }
+            90% {
+                 opacity: 1;
+            }
+            100% {
+                bottom: 100%;
+                opacity: 0;
+                transform: scale(1.2);
+            }
+        }
+
+        .bubble {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background-color: rgba(135, 206, 250, 0.4);
+            border-radius: 50%;
+            animation-name: rise;
+            animation-timing-function: linear;
+            animation-iteration-count: infinite;
+            display: none; /* Ocultas por defecto */
+        }
     </style>
 </head>
 <body class="overflow-x-hidden">
@@ -252,6 +280,53 @@
                         <p class="text-slate-300">La aireación (soplante/válvula), recirculación y purga de lodos.</p>
                     </div>
                 </div>
+
+                <!-- Simulación Interactiva -->
+                <div id="simulation-container" class="mt-8 pt-6 border-t border-slate-700">
+                    <h5 class="text-lg font-semibold text-center mb-4 text-slate-300">Simulación Interactiva del Lazo de Control de DO</h5>
+                    <div class="grid md:grid-cols-3 gap-8 items-center">
+                        <!-- Controles -->
+                        <div class="space-y-4 text-center md:text-left">
+                            <div>
+                                <label for="load-slider" class="block mb-2 text-sm font-medium text-slate-400">
+                                    Perturbación: Carga Orgánica
+                                </label>
+                                <input id="load-slider" type="range" min="10" max="100" value="50" class="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer">
+                                <div class="text-center text-slate-300 mt-1"><span id="load-value">50</span>%</div>
+                            </div>
+                            <div class="p-3 rounded-lg bg-slate-800">
+                                <p class="text-sm text-orange-400 font-semibold">Potencia Soplante (MV)</p>
+                                <p id="mv-value" class="text-2xl font-bold text-white">50%</p>
+                            </div>
+                        </div>
+                
+                        <!-- Reactor Tank -->
+                        <div class="h-64 bg-slate-800 rounded-lg relative overflow-hidden border-2 border-blue-500/50 flex items-end justify-center">
+                            <div class="absolute top-2 text-center text-white text-sm font-bold bg-slate-900/50 px-2 py-1 rounded z-10">Reactor Biológico</div>
+                            <div id="bubbles-container" class="absolute inset-0"></div>
+                            <div class="w-full h-3/4 bg-gradient-to-t from-cyan-800/50 to-cyan-900/40"></div>
+                        </div>
+                
+                        <!-- Medidor DO -->
+                        <div class="flex flex-col items-center justify-center">
+                             <div class="w-24 h-48 bg-slate-800 rounded-lg border-2 border-slate-600 p-2 flex flex-col-reverse relative">
+                                <div id="do-level" class="w-full bg-green-500 rounded-sm transition-all duration-300" style="height: 50%;"></div>
+                                <div class="absolute top-1/2 -translate-y-1/2 left-full ml-2 w-20 text-xs text-blue-300">
+                                    <span class="font-bold">SP: 2.0</span>
+                                    <hr class="border-blue-400 border-dashed -mt-1">
+                                </div>
+                                <div class="absolute h-full w-full top-0 left-0 flex flex-col justify-between py-1 px-2 text-xs text-white/50">
+                                    <span>4</span><span>3</span><span>2</span><span>1</span><span>0</span>
+                                </div>
+                             </div>
+                             <div class="mt-2 text-center">
+                                 <p class="text-sm text-green-400 font-semibold">Oxígeno Disuelto (PV)</p>
+                                 <p id="pv-value" class="text-xl font-bold text-white">2.0 mg/L</p>
+                             </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="mt-6 pt-6 border-t border-slate-700">
                     <h4 class="font-semibold text-lg mb-2 text-slate-200">¿Cómo reacciona el lazo?</h4>
                     <p class="text-slate-300 leading-relaxed">
@@ -277,7 +352,6 @@
             // Efecto de luz que sigue al cursor
             const light = document.querySelector('.cursor-light');
             document.addEventListener('mousemove', (e) => {
-                // Usamos pageX y pageY para que funcione correctamente con el scroll
                 light.style.transform = `translate(${e.pageX - 250}px, ${e.pageY - 250}px)`;
             });
 
@@ -290,13 +364,94 @@
                     }
                 });
             }, {
-                threshold: 0.1 // Se activa cuando el 10% del elemento es visible
+                threshold: 0.1
+            });
+            animatedElements.forEach(el => observer.observe(el));
+
+            // --- LÓGICA DE LA SIMULACIÓN ---
+            const loadSlider = document.getElementById('load-slider');
+            const loadValue = document.getElementById('load-value');
+            const mvValue = document.getElementById('mv-value');
+            const pvValue = document.getElementById('pv-value');
+            const doLevel = document.getElementById('do-level');
+            const bubblesContainer = document.getElementById('bubbles-container');
+
+            // Parámetros de la simulación
+            let setPoint = 2.0;
+            let processVariable = 2.0; // DO en mg/L
+            let manipulatedVariable = 50.0; // Potencia del soplante %
+            let load = 50.0; // Carga orgánica %
+
+            const Kp = 30; // Ganancia Proporcional del controlador
+            const SUPPLY_FACTOR = 0.08;
+            const CONSUMPTION_FACTOR = 0.08;
+            const MIN_DO = 0;
+            const MAX_DO = 4.0;
+            const MAX_BUBBLES = 40;
+            let bubbles = [];
+
+            // Inicializar burbujas
+            for (let i = 0; i < MAX_BUBBLES; i++) {
+                const bubble = document.createElement('div');
+                bubble.className = 'bubble';
+                bubble.style.left = `${Math.random() * 100}%`;
+                bubble.style.animationDuration = `${2 + Math.random() * 3}s`;
+                bubble.style.animationDelay = `${Math.random() * 4}s`;
+                bubblesContainer.appendChild(bubble);
+                bubbles.push(bubble);
+            }
+
+            // Event listener para el slider de carga
+            loadSlider.addEventListener('input', (e) => {
+                load = parseFloat(e.target.value);
+                loadValue.textContent = load.toFixed(0);
             });
 
-            animatedElements.forEach(el => {
-                observer.observe(el);
-            });
+            function updateUI() {
+                // Actualizar textos
+                pvValue.textContent = `${processVariable.toFixed(2)} mg/L`;
+                mvValue.textContent = `${manipulatedVariable.toFixed(0)}%`;
+
+                // Actualizar barra de nivel de DO
+                const doPercentage = (processVariable / MAX_DO) * 100;
+                doLevel.style.height = `${doPercentage}%`;
+                
+                // Cambiar color del medidor según la desviación
+                const error_abs = Math.abs(setPoint - processVariable);
+                if (error_abs > 0.5) {
+                    doLevel.style.backgroundColor = '#ef4444'; // red-500
+                } else if (error_abs > 0.2) {
+                    doLevel.style.backgroundColor = '#f59e0b'; // amber-500
+                } else {
+                    doLevel.style.backgroundColor = '#22c55e'; // green-500
+                }
+
+                // Actualizar burbujas
+                const activeBubbles = Math.round((manipulatedVariable / 100) * MAX_BUBBLES);
+                bubbles.forEach((bubble, index) => {
+                    bubble.style.display = index < activeBubbles ? 'block' : 'none';
+                });
+            }
+
+            function simulationLoop() {
+                // 1. Calcular cambio del proceso
+                const consumption = (load / 100) * CONSUMPTION_FACTOR;
+                const supply = (manipulatedVariable / 100) * SUPPLY_FACTOR;
+                processVariable += supply - consumption;
+                processVariable = Math.max(MIN_DO, Math.min(MAX_DO, processVariable));
+
+                // 2. Lógica del controlador (Control Proporcional simple)
+                const error = setPoint - processVariable;
+                manipulatedVariable += error * Kp;
+                manipulatedVariable = Math.max(0, Math.min(100, manipulatedVariable));
+
+                // 3. Actualizar la interfaz
+                updateUI();
+            }
+            
+            setInterval(simulationLoop, 100); // Ejecutar el bucle de simulación cada 100ms
         });
     </script>
 </body>
 </html>
+
