@@ -216,6 +216,41 @@
                 <h2 class="text-3xl sm:text-4xl font-bold text-gradient">2. Conexión en la Depuradora Clásica (EDAR)</h2>
                 <p class="mt-3 text-slate-400 max-w-2xl mx-auto">Uniendo los lazos y parámetros en las etapas clave de una Estación Depuradora de Aguas Residuales.</p>
             </div>
+
+            <!-- COMPONENTES DE LA DEPURADORA -->
+            <div class="scroll-animate mb-20">
+                <h3 class="text-2xl font-semibold text-center mb-8 text-slate-300">¿De qué está hecha una depuradora?</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 text-center">
+                    <!-- Card 1: Tanques -->
+                    <div class="bg-slate-800/50 p-6 rounded-xl border border-slate-700 hover:border-blue-500 transition-colors">
+                        <svg class="w-12 h-12 mx-auto text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h6m-6 4h6m-6 4h6"></path></svg>
+                        <h4 class="font-bold text-lg text-slate-200 mt-2">Tanques y Canales</h4>
+                        <p class="text-sm text-slate-400 mt-1">Las grandes estructuras que contienen y guían el agua.</p>
+                        <p class="text-xs font-mono mt-4 p-2 bg-slate-900 rounded-md text-cyan-300">Material: Hormigón Armado</p>
+                    </div>
+                    <!-- Card 2: Equipos -->
+                    <div class="bg-slate-800/50 p-6 rounded-xl border border-slate-700 hover:border-blue-500 transition-colors">
+                         <svg class="w-12 h-12 mx-auto text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                        <h4 class="font-bold text-lg text-slate-200 mt-2">Equipos Mecánicos</h4>
+                        <p class="text-sm text-slate-400 mt-1">Bombas, rejas y agitadores que mueven y tratan el agua.</p>
+                        <p class="text-xs font-mono mt-4 p-2 bg-slate-900 rounded-md text-cyan-300">Material: Acero Inoxidable</p>
+                    </div>
+                    <!-- Card 3: Tuberías -->
+                    <div class="bg-slate-800/50 p-6 rounded-xl border border-slate-700 hover:border-blue-500 transition-colors">
+                        <svg class="w-12 h-12 mx-auto text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        <h4 class="font-bold text-lg text-slate-200 mt-2">Tuberías y Válvulas</h4>
+                        <p class="text-sm text-slate-400 mt-1">La red de arterias que transporta el flujo entre etapas.</p>
+                        <p class="text-xs font-mono mt-4 p-2 bg-slate-900 rounded-md text-cyan-300">Material: PVC / PRFV / Acero</p>
+                    </div>
+                    <!-- Card 4: Control -->
+                    <div class="bg-slate-800/50 p-6 rounded-xl border border-slate-700 hover:border-blue-500 transition-colors">
+                         <svg class="w-12 h-12 mx-auto text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M12 6V3m0 18v-3M5.636 5.636L4.222 4.222m15.556 15.556l-1.414-1.414M4.222 19.778l1.414-1.414M19.778 4.222l-1.414 1.414"></path></svg>
+                        <h4 class="font-bold text-lg text-slate-200 mt-2">Sondas y Control</h4>
+                        <p class="text-sm text-slate-400 mt-1">Los "sentidos" de la planta que miden y envían datos.</p>
+                        <p class="text-xs font-mono mt-4 p-2 bg-slate-900 rounded-md text-cyan-300">Material: Plásticos Técnicos</p>
+                    </div>
+                </div>
+            </div>
             
             <!-- Etapas de la depuradora -->
             <div class="scroll-animate mb-16">
@@ -338,11 +373,30 @@
         </section>
         
         <!-- Mensaje Final -->
-        <footer class="text-center mt-24 pt-12 border-t border-slate-800 scroll-animate">
+        <div class="text-center mt-24 pt-12 border-t border-slate-800 scroll-animate">
             <h3 class="text-2xl font-bold text-gradient">Conexión Completa</h3>
             <p class="text-slate-400 max-w-3xl mx-auto mt-4">
                 En la depuradora, cada etapa utiliza parámetros físicos, químicos y biológicos como <strong class="text-green-400">PV</strong> dentro de lazos de control. El controlador ajusta actuadores (la <strong class="text-orange-400">MV</strong>) para volver al <strong class="text-blue-400">SP</strong>. Así se consigue estabilidad del proceso, cumplimiento legal y ahorro de energía.
             </p>
+        </div>
+
+        <!-- Glosario -->
+        <footer class="scroll-animate mt-16 pt-8 border-t border-slate-800/50">
+             <h4 class="text-center text-base font-medium text-slate-500 mb-6">Glosario de Términos y Abreviaturas</h4>
+             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-3 text-xs text-slate-500 max-w-4xl mx-auto text-center sm:text-left">
+                 <div><strong class="text-slate-400">SP:</strong> Punto de Consigna</div>
+                 <div><strong class="text-slate-400">PV:</strong> Variable de Proceso</div>
+                 <div><strong class="text-slate-400">MV:</strong> Variable Manipulada</div>
+                 <div><strong class="text-slate-400">DO:</strong> Oxígeno Disuelto</div>
+                 <div><strong class="text-slate-400">EDAR:</strong> Estación Depuradora de Aguas Residuales</div>
+                 <div><strong class="text-slate-400">SS:</strong> Sólidos en Suspensión</div>
+                 <div><strong class="text-slate-400">ORP:</strong> Potencial Óxido-Reducción</div>
+                 <div><strong class="text-slate-400">DQO/DBO:</strong> Demanda Química/Biológica de Oxígeno</div>
+                 <div><strong class="text-slate-400">MLSS:</strong> Sólidos en Suspensión del Licor Mezcla</div>
+                 <div><strong class="text-slate-400">SVI:</strong> Índice Volumétrico de Lodos</div>
+                 <div><strong class="text-slate-400">SRT:</strong> Edad del Fango</div>
+                 <div><strong class="text-slate-400">PID:</strong> Controlador Proporcional Integral Derivativo</div>
+             </div>
         </footer>
 
     </div>
